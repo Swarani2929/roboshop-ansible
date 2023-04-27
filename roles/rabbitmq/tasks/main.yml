@@ -1,0 +1,3 @@
+- name: Print Rabbitmq
+  ansible.builtin.debug:
+    msg: rabbitmq
