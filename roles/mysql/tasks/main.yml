@@ -1,14 +1,14 @@
 
 - name: Setup mysql Repo
-  ansible.builtin.yum:
+  ansible.builtin.copy:
     src: mysql.repo
     dest: /etc/yum.repos.d/mysql.repo
-   
+
 - name: Disable mysql 8
   ansible.builtin.shell: dnf module disable mysql -y
 
 - name: Install mysql 5.7
-  ansible.builtin.shell:
+  ansible.builtin.yum:
     name: mysql-community-server
     state: installed
 
