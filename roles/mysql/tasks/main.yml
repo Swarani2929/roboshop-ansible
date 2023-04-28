@@ -3,8 +3,7 @@
   ansible.builtin.yum:
     src: mysql.repo
     dest: /etc/yum.repos.d/mysql.repo
-    disable_gpg_check: yes
-
+   
 - name: Disable mysql 8
   ansible.builtin.shell: dnf module disable mysql -y
 
