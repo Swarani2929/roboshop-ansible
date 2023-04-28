@@ -1,15 +1,3 @@
-
-#print_head "Add Application user"
-#rabbitmqctl list_users | grep roboshop &>>{log_file}
-#if [ $? -ne 0 ]; then
-#rabbitmqctl add_user roboshop ${Roboshop_app_password} &>>{log_file}
-#fi
-#status_check $?
-
-#print_head "configure set_permissions"
-#rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>{log_file}
-#status_check $?
-
 - name: Setup Erlang Repo
   ansible.builtin.shell: curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | bash
 
@@ -27,3 +15,13 @@
     name: rabbitmq-server
     state: started
     enabled: true
+
+- name: Add Application user
+  community.rabbitmq.rabbitmq_user:
+    user: roboshop
+    password: roboshop123
+    vhost: /
+    configure_priv: .*
+    read_priv: .*
+    write_priv: .*
+    state: present
