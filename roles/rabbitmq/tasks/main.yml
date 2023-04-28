@@ -1,22 +1,3 @@
-#print_head "Setup Erlang Repos"
-#curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | bash &>>{log_file}
-#status_check $?
-
-#print_head "Setup Rabbitmq repos"
-#curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | bash &>>{log_file}
-#status_check $?
-
-#print_head "Installing Rabbitmq"
-#yum install rabbitmq-server erlang -y &>>{log_file}
-#status_check $?
-
-#print_head "Start Rabbitmq service"
-#systemctl enable rabbitmq-server &>>{log_file}
-#status_check $?
-
-#print_head "Start rabbitmq service"
-#systemctl start rabbitmq-server &>>{log_file}
-#status_check $?
 
 #print_head "Add Application user"
 #rabbitmqctl list_users | grep roboshop &>>{log_file}
@@ -29,3 +10,20 @@
 #rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>{log_file}
 #status_check $?
 
+- name: Setup Erlang Repo
+  ansible.builtin.shell: curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | bash
+
+- name: Setup Rabbitmq Repo
+  ansible.builtin.shell: curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | bash
+
+- name: Install Erlang & Rabbitmq
+  ansible.builtin.yum:
+   - rabbitmq-server
+   - erlang
+  state: installed
+
+- name: Start Rabbitmq service
+  ansible.builtin.systemd:
+    name: rabbitmq-server
+    state: started
+    enabled: true
