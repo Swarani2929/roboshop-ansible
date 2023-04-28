@@ -1,7 +1,3 @@
-# vim /etc/nginx/default.d/roboshop.conf
-
-# systemctl restart nginx
-
 - name: Install nginx
   ansible.builtin.yum:
     name: nginx
@@ -22,3 +18,14 @@
     src: https://roboshop-artifacts.s3.amazonaws.com/frontend.zip
     dest: /usr/share/nginx/html
     remote_src: yes
+
+- name: Create Configs file in Nginx
+  ansible.builtin.copy:
+    src: roboshop.conf
+    dest: /etc/nginx/default.d/roboshop.conf
+
+- name: Start nginx service
+  ansible.builtin.systemd:
+    name: nginx
+    state: restarted
+    enabled: yes
