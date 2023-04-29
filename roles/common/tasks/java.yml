@@ -1,0 +1,28 @@
+
+  #Schema setup function
+#schema_setup
+
+  #systemd setup function
+#systemd_setup
+
+- name: Install maven
+  ansible.builtin.yum:
+    name: maven
+    state: installed
+
+- name: Import App Pre-requisite
+  ansible.builtin.import_tasks:
+    file: app-prereq.yml
+
+- name: Install Maven dependencies
+  ansible.builtin.shell: mvn clean package; mv target/${component}-1.0.jar ${component}.jar
+
+- name: Schema Setup
+  ansible.builtin.import_tasks:
+    file: schema-setup.yml
+  when: schema_type is defined
+
+- name: Systemd Setup
+  ansible.builtin.import_tasks:
+    file: systemd-setup.yml
+
