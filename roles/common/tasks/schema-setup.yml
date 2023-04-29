@@ -22,6 +22,4 @@
 
 #fi
 
-- name: Copy Mongo Repo
-  ansible.builtin.copy:
 
