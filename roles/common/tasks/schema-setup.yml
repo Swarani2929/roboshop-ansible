@@ -21,7 +21,7 @@
         name: mysql
         state: installed
     - name: Load Schema
-      ansible.builtin.shell: mysql -h mysql-dev.devops25.online -uroot -p${mysql_root_password} < /app/schema/{{ component }}.sql
+      ansible.builtin.shell: mysql -h mysql-dev.devops25.online -uroot -pRoboshop@1 < /app/schema/{{ component }}.sql
 
 
 
