@@ -11,7 +11,7 @@
        state: installed
 
     - name: Load Schema
-      ansible.builtin.shell: mongo --host mongodb-dev.devops25.online </app/schema/{{ component }}.js
+      ansible.builtin.shell: mongo --host mongodb-dev.devops25.online </app/schema/{{component}}.js
 
 - name: Mysql Schema
   when: schema_type == "mysql"
@@ -21,7 +21,7 @@
         name: mysql
         state: installed
     - name: Load Schema
-      ansible.builtin.shell: mysql -h mysql-dev.devops25.online -uroot -pRoboshop@1 < /app/schema/{{ component }}.sql
+      ansible.builtin.shell: mysql -h mysql-dev.devops25.online -uroot -pRoboshop@1 < /app/schema/{{component}}.sql
 
 
 
