@@ -1,32 +1,30 @@
-- name: config erlang
-  ansible.builtin.shell: curl -s {{item}} |  bash
+- name: configuring yum repos
+  ansible.builtin.shell: curl -s {{item}} | bash
   loop:
-    - https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh
-    - https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh
+    - curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh
+    - curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh
 
-- name: Install ErLang and RabbitMQ
+- name: install erlang and rabbitmq
   ansible.builtin.yum:
-    name:
-      - rabbitmq-server
-      - erlang
+    name: rabbitmq-server
     state: installed
 
-
-- name: Start RabbitMQ Service
+- name: start rabbitmq server
   ansible.builtin.systemd:
     name: rabbitmq-server
-    state: started
+    state: restarted
     enabled: yes
 
-- name: Add application user
+- name: add application user
   community.rabbitmq.rabbitmq_user:
-    user: "{{ lookup('amazon.aws.aws_ssm', '{{env}}.{{component}}.amqp_user', region='us-east-1') }}"
-    password: "{{ lookup('amazon.aws.aws_ssm', '{{env}}.{{component}}.amqp_pass', region='us-east-1') }}"
+    user: roboshop
+    password: "{{roboshop_rabbitmq_password}}"
     vhost: /
     configure_priv: .*
     read_priv: .*
     write_priv: .*
     state: present
-
-
+    tags: administrator
+  vars:
+    roboshop_rabbitmq_password: "{{ lookup('aws_ssm', '{{env}}.{{component}}.amqp_pass', region='us-east-1' ) }}"
 
