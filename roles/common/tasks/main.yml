@@ -4,4 +4,4 @@
 - name: Install Node Exporter
   ansible.builtin.import_tasks:
     name: prometheus
-    tasks_from: exporter
+    tasks_from: exporter.yml
